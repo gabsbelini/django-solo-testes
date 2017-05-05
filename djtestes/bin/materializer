@@ -1,0 +1,31 @@
+#!/home/gabs/workspace/Django/django-solo-testes/djtestes/bin/python3.5
+#
+# Materialize.py , recreates .env files from etcd 
+# (C) Department of Parks and Wildlife(DPAW) 2014 
+# Go look up GPL 3 and use that as the license.
+#
+# Authors: Shayne O'Neill 
+import os
+import sys
+import etcpy
+from  materialize import *
+
+if __name__ == "__main__":
+	etchost='localhost'
+	if os.environ.has_key('etchost'):
+		etchost = os.environ['etchost']
+	if ((len (sys.argv) ==3) and (sys.argv[1]=='magic')):
+		magic_rematerialize(sys.argv[2])
+	elif len (sys.argv) !=4:
+		print "mateerialize.py {dematerialize/rematerialize} {cluster} {app}"
+		print "please ensure correct environment variable hygene"
+	else:
+		cluster = sys.argv[2]
+		app = sys.argv[3]
+		command = sys.argv[1]	
+		if command == "dematerialize":
+			dematerialize(etchost,cluster,app)
+		elif command == "rematerialize":
+			rematerialize(etchost,cluster,app)
+		else:
+			print "Unknown command"
