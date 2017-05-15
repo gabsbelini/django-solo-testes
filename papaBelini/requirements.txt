@@ -1,7 +1,6 @@
 appdirs==1.4.2
 backports-abc==0.4
 beautifulsoup4==4.5.1
-Brlapi==0.6.1
 cairocffi==0.7.2
 cffi==1.7.0
 chardet==2.2.1
