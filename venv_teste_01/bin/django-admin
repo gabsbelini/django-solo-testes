@@ -1,4 +1,4 @@
-#!/home/gabsbelini/workspace/Django/django-solo-testes/venvSolo/bin/python2.7
+#!/home/gabsbelini/workspace/Django/django-solo-testes/venv_teste_01/bin/python3.4
 
 # -*- coding: utf-8 -*-
 import re

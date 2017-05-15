@@ -1,10 +1,10 @@
-#!/home/gabsbelini/workspace/Django/django-solo-testes/venvSolo/bin/python2.7
+#!/home/gabsbelini/workspace/Django/django-solo-testes/venv_teste_01/bin/python3.4
 
 # -*- coding: utf-8 -*-
 import re
 import sys
 
-from pip import main
+from wheel.tool import main
 
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])

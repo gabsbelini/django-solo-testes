@@ -1,4 +1,4 @@
-#!/home/gabsbelini/workspace/Django/django-solo-testes/venvSolo/bin/python
+#!/home/gabsbelini/workspace/Django/django-solo-testes/venv_teste_01/bin/python
 
 import sys
 import getopt
