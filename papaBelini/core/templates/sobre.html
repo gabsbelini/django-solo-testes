@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Sobre{% endblock %}
+{% block container %}
+<div class="parallax-container sobre-imagesize">
+   <div class="parallax"><img src="http://cdn.justluxe.com/articles/images/news/shutterstock_254090041anshar%201960758.jpg"></div>
+ </div>
+ <div class="section white">
+   <div class="row container">
+     <h2 class="header">Quem Somos</h2>
+     <p class="grey-text text-darken-3 lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id ipsum auctor eros ornare accumsan. Quisque quis efficitur purus. Maecenas ac ex in eros elementum faucibus. In suscipit vulputate arcu, quis lacinia massa viverra a. Pellentesque vestibulum nunc eu varius pellentesque. Morbi commodo egestas nunc vel vulputate. Morbi rutrum augue eget tincidunt eleifend. Aliquam nec congue lorem. Ut non auctor orci, ac fringilla enim. Cras eget nisi non sapien volutpat imperdiet at in diam. Phasellus placerat sed sem at tincidunt. Morbi sed enim a leo sagittis tempor. Ut et euismod dui, id mattis dui.
+
+Curabitur id risus placerat, facilisis purus et, sodales justo. Suspendisse aliquam nibh risus, sed pharetra odio maximus nec. Ut vestibulum neque quis quam volutpat, non congue lectus consequat. Aliquam suscipit lorem tempor, auctor nisl eu, hendrerit mauris. Quisque ullamcorper molestie gravida. Vivamus venenatis pretium sodales. Nunc ut auctor ex. Duis ultrices, velit id fringilla mattis, augue ante ornare nulla, accumsan facilisis libero purus interdum massa. Vestibulum ornare in nunc quis dignissim. Aliquam erat volutpat.
+
+In ac neque metus. Praesent sapien ante, tincidunt et nunc et, convallis efficitur mi. Nunc sit amet pretium mi. Nullam nec nibh ut quam malesuada convallis at a ligula. Donec eget orci sit amet odio vehicula mattis vel ac nisl. Vestibulum condimentum, nisl quis volutpat viverra, eros turpis scelerisque purus, a maximus diam lorem sed turpis. Nullam tristique nulla eu libero ullamcorper, ut varius mi fringilla.
+      </p>
+   </div>
+ </div>
+ <div class="parallax-container sobre-imagesize">
+   <div class="parallax"><img src="https://4.bp.blogspot.com/-n3dXqBhL-Yc/UhDgRNBkQFI/AAAAAAAAFX8/5TnlLKVPUi8/s0/Badlands_Landscape_3840x2160.jpg"></div>
+ </div>
+{% endblock %}
+{% block scripts %}<script type="text/javascript">
+$(document).ready(function(){
+      $('.parallax').parallax();
+    });
+if (typeof(jQuery) === 'undefined') {
+  var jQuery;
+  // Check if require is a defined function.
+  if (typeof(require) === 'function') {
+    jQuery = $ = require('jquery');
+  // Else use the dollar sign alias.
+  } else {
+    jQuery = $;
+  }
+}
+</script>{% endblock %}

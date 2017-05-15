@@ -21,5 +21,10 @@ from core import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^contato/$', views.contato, name='contato'),
+    url(r'^sobre$', views.sobre, name='sobre'),
+    url(r'^comecando$', views.comecando, name='comecando'),
+    url(r'^criar-conta$', views.criar_conta, name='criar-conta'),
+    url(r'^<>$', views.canal, name='meu-canal'),
     url(r'^admin/', admin.site.urls),
 ]

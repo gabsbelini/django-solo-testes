@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Starter Template - Materialize</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'materialize/css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'materialize/css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="light-grey lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo"><img src="https://s3.amazonaws.com/designmantic-logos/logos/2017/May/small-3934-59198f861070f.png" alt="logo" /></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="{% url 'sobre' %}" class="">Sobre</a></li>
+        <li><a href="{% url 'comecando' %}" class="">Começando</a></li>
+        <li><a href="{% url 'contato' %}" class="">Contato</a></li>
+        <li><a class="waves-effect waves-light orange btn-large">Button</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  {% block container %}
+  <div class="container">
+    <div class="row">
+        <div class="col m10 offset-m1 s12">
+            <h2 class="center-align">Contact Form</h2>
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col m6 s12">
+                            <input id="first_name" type="text" class="validate">
+                            <label for="first_name">First Name</label>
+                        </div>
+                        <div class="input-field col m6 s12">
+                            <input id="last_name" type="text" class="validate">
+                            <label for="last_name">Last Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col m6 s12">
+                            <i class="mdi-content-mail prefix"></i>
+                            <input id="email" type="email" class="validate" required>
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="input-field col m6 s12">
+                            <i class="mdi-maps-store-mall-directory prefix"></i>
+                            <input id="company" type="text" class="validate">
+                            <label for="company">Company</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <textarea id="message" class="materialize-textarea"></textarea>
+                          <label for="message">Message</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <label for="budget">Budget</label>
+                          <br/>
+                        </div>
+                        <div class="input-field col s12">
+                            <select class="browser-default" id="budget">
+                              <option value="" selected disabled>Choose your option</option>
+                              <option value="1">&lt; $4000</option>
+                              <option value="2">$4000 - $9000</option>
+                              <option value="3">&gt; $9000</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <label>How Did You Find Us?</label>
+                          <br/>
+                        </div>
+                        <div class="input-field col m3 s6 center-align">
+                          <input name="group1" type="radio" id="google" />
+                          <label for="google">Google</label>
+                        </div>
+                        <div class="input-field col m3 s6 center-align">
+                          <input name="group1" type="radio" id="customer" />
+                          <label for="customer">Customer</label>
+                        </div>
+                        <div class="input-field col m3 s6 center-align">
+                          <input name="group1" type="radio" id="store" />
+                          <label for="store">Store</label>
+                        </div>
+                        <div class="input-field col m3 s6 center-align">
+                          <input name="group1" type="radio" id="other" />
+                          <label for="other">Other</label>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <label>Communication Preferences</label>
+                          <br/>
+                        </div>
+                        <div class="input-field col m4 s12 center-align">
+                          <input name="group2" type="checkbox" id="emailComm" />
+                          <label for="emailComm">Email</label>
+                        </div>
+                        <div class="input-field col m4 s12 center-align">
+                          <input name="group2" type="checkbox" id="callComm" />
+                          <label for="callComm">Call Me</label>
+                        </div>
+                        <div class="input-field col m4 s12 center-align">
+                          <input name="group2" type="checkbox" id="newsletter" />
+                          <label for="newsletter">Newsletter</label>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col m12">
+                         <p class="right-align"><button class="btn btn-large waves-effect waves-light" type="button" name="action">Send Message</button></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+  {% endblock %}
+
+  <footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="{% static 'materialize/js/materialize.js' %}"></script>
+  <script src="{% static 'materialize/js/init.js' %}"></script>
+
+  </body>
+</html>
