@@ -1,5 +1,4 @@
 appdirs==1.4.2
-apturl===0.5.2ubuntu4
 backports-abc==0.4
 beautifulsoup4==4.5.1
 Brlapi==0.6.1
