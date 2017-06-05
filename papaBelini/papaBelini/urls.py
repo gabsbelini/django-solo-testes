@@ -21,6 +21,7 @@ from core import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'cafe$', views.cafe, name='cafe'),
     url(r'^contato/$', views.contato, name='contato'),
     url(r'^sobre$', views.sobre, name='sobre'),
     url(r'^comecando$', views.comecando, name='comecando'),
