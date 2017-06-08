@@ -17,36 +17,25 @@ class CafeView(TemplateView):
     def get_context_data(self, **kwargs):
         class AppURLopener(urllib.request.FancyURLopener):
             version = "Mozilla/5.0"
-
         opener = AppURLopener()
         response = opener.open('https://www.investing.com/commodities/us-coffee-c-contracts').read()
         soup = BeautifulSoup(response, 'html.parser')
         price = float(soup.find("td", {"class": "pid-8832-last"}).get_text())
+        price_var_points = float(soup.find("td", {"class": "pid-8832-pc"}).get_text())
         context = super(CafeView, self).get_context_data(**kwargs)
         context['preco'] = price
-        try:
-            lista_prices
-        except NameError:
-            lista_prices = []
+        if price_var_points >= 0.0:
+            context['pontos_positivo'] = str(price_var_points)
         else:
-            lista_prices.append(price)
-        try:
-            lista_hours
-        except NameError:
-            lista_hours = []
-        else:
-            lista = str(datetime.datetime.now())
-            hora, ponto, ms = lista.split()[1].partition('.')
-            lista_hours.append(hora)
+            context['pontos_negativo'] = str(price_var_points)
         x = [-2.5, 0.4, 4.2, 6.9, 7.8, 8, 10, 15, 25]
         y = [q**2-q+3 for q in x]
-        trace1 = go.Scatter(x=lista_hours, y=lista_prices, marker={'color': 'red', 'symbol': 104, 'size': "10"},
+        trace1 = go.Scatter(x=x, y=y, marker={'color': 'red', 'symbol': 104, 'size': "10"},
                             mode="lines",  name='1st Trace')
         data=go.Data([trace1])
         layout=go.Layout(title="Coffee Price", xaxis={'title':'x1'}, yaxis={'title':'x2'})
         figure=go.Figure(data=data,layout=layout)
         div = opy.plot(figure, auto_open=False, output_type='div')
-
         context['graph'] = div
         return context
     template_name = 'cafe.html'

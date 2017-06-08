@@ -4,7 +4,20 @@
 <h1 class="header center orange-text">Preço do Café Online!</h1>
 </div>
 <div class="row">
-<h5 class="header col s12 light center">O preço do café hoje é de U${{preco}}</h5>
+  {% if pontos_positivo %}
+<h5 class="header col s12 light center">O preço do café hoje é de U$<span class="green-text">{{preco}}</span></h5>
+{% endif %}
+{% if pontos_positivo %}
+<div class="center green-text">
+  <h3>Subiu  +{{pontos_positivo}} pontos.</h3>
+
+</div>
+{% else %}
+<div class="center red-text">
+  <h3>Caiu -{{pontos_negativo}} pontos.</h3>
+
+</div>
+{% endif %}
 </div>
   {% if graph %}
   <div class="row">
