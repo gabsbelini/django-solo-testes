@@ -2,7 +2,16 @@ import urllib.request
 from bs4 import BeautifulSoup
 from .models import Commodity
 import datetime
+import plotly.plotly as py
+import plotly.graph_objs as go
+import quandl
+import requests
+import json
+import numpy as np
 
+from django.shortcuts import redirect
+from django.views.generic.edit import FormView
+from .forms import GraphForm
 from django.shortcuts import render
 from django.views.generic import (
     CreateView, TemplateView, UpdateView, FormView
@@ -14,6 +23,29 @@ import plotly.offline as opy
 import plotly.graph_objs as go
 
 
+url_coffe_futures = 'https://www.quandl.com/api/v3/datasets/CHRIS/ICE_KC1'
+rjson = requests.get(url_coffe_futures).json()
+
+lista_caiu = [0, 0, 0, 0, 0]
+lista_subiu = [0, 0, 0, 0, 0]
+subiu = 0
+caiu = 0
+indice = 3
+for dia in range(5):
+    for variacao in np.arange(dia, 200, 5):
+        if (rjson['dataset']['data'][variacao][5] != None and rjson['dataset']['data'][variacao][5] > 0.0):
+            subiu += 1
+        elif (rjson['dataset']['data'][variacao][5] != None and rjson['dataset']['data'][variacao][5] < 0.0):
+            caiu += 1
+    print('inseriu no indice', indice)
+    lista_subiu[indice] = subiu
+    lista_caiu[indice] = caiu
+    subiu = 0
+    caiu = 0
+    if indice == 0:
+        indice = 4
+    else:
+        indice -= 1
 class CafeView(TemplateView):
     #Commodity.objects.all().delete()
     def get_context_data(self, **kwargs):
@@ -64,12 +96,52 @@ class ContatoView(TemplateView):
 
 
 class ComecandoView(TemplateView):
+    form_class = GraphForm
+    def get_context_data(self, **kwargs):
+        context = super(ComecandoView, self).get_context_data(**kwargs)
+        lista_precos = []
+        lista_datas = []
+        for variacao in range(10500):
+            lista_precos.append(rjson['dataset']['data'][variacao][4])
+            lista_datas.append(rjson['dataset']['data'][variacao][0])
 
+        # Create a trace
+        trace = go.Scatter(
+            y = lista_precos,
+            x = lista_datas
+        )
+
+        data = [trace]
+        fig = go.Figure(data=data)
+        div = opy.plot(fig, auto_open=False, output_type='div')
+        context['graph'] = div
+        return context
+    def form_valid(self, form):
+        form.send_email()
+        return super(ComecandoView, self).form_valid(form)
     template_name = 'comecando.html'
 
 
 class SobreView(TemplateView):
-
+    #Commodity.objects.all().delete()
+    def get_context_data(self, **kwargs):
+        context = super(SobreView, self).get_context_data(**kwargs)
+        trace1 = go.Bar(
+        x=['segunda', 'terca', 'quarta', 'quinta', 'sexta'],
+            y=lista_subiu,
+            name='Subiu'
+        )
+        trace2 = go.Bar(x=['segunda', 'terca', 'quarta', 'quinta', 'sexta'],
+            y=lista_caiu,
+            name='Caiu')
+        data = [trace1, trace2]
+        layout = go.Layout(
+            barmode='group'
+        )
+        fig = go.Figure(data=data, layout=layout)
+        div = opy.plot(fig, auto_open=False, output_type='div')
+        context['graph'] = div
+        return context
     template_name = 'sobre.html'
 
 

@@ -1,28 +1,19 @@
 {% extends 'base.html' %}
 {% block container %}
-<div class="grey lighten-2">
+
+<form action="" method="post">
+  {% csrf_token %}
+  {{form.as_p}}
+  <input type="submit" value="Send message">
+</form>
 
 
-<div class="container">
-    <div class="row">
-        <h4>Crie sua conta no StreamTeam</h4>
-        <p>
-          Clique em <a href="{% url 'criar-conta' %}">Criar Conta</a> para tornar-se um usuário do StreamTeam e poder usufruir plenamente de nossos serviços.
-        </p>
-    </div>
-
-    <div class="row">
-        <h4>Faça o Download de um aplicativo de transmissão de vídeo</h4>
-        <p>
-            Escolha um aplicativo de transmissão de vídeo listado abaixo ou outro de sua preferência. Configure o respectivo aplicativo para que nosso sistema possa conectar-se com o aplicativo escolhido e efetuar a transmissão.
-        </p>
-    </div>
-    <div class="row">
-        <h4>Comece uma Transmissão</h4>
-        <p>
-            Usando um dos aplicativos sugeridos anteriormente, inicie uma transmissão pelo aplicativo. Feito isso basta logar em nosso site, clicar em <a href="profile"> Meu Perfil </a> e clicar no botao</p> <p> <a href="{% url 'meu-canal' %}" id="download-button" class="btn-large waves-effect waves-light green lighten-1">Iniciar uma Transmissão</a>
-        </p>
-    </div>
 </div>
-
+  {% if graph %}
+  <div class="row">
+    <div class="col s12">
+        {{ graph|safe }}
+    </div>
+  </div>
+{% endif %}
 {% endblock %}
