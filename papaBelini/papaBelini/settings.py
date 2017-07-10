@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django_crontab',
     #apps
     'core',
     'accounts',
@@ -122,3 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+#ASYNCHRONOUS JOBS
+CRONJOBS = [
+    ('* * * * 5', 'core.cron.my_scheduled_job')
+]

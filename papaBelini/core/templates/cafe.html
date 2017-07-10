@@ -4,6 +4,7 @@
 <h1 class="header center orange-text">Preço do Café Online!</h1>
 </div>
 <div class="row">
+  <h5>Aqui eh o tempo timenow {{timenow}}+{{tiponow}} e aqui eh o commodity time {{commodity_time}}</h5>
   {% if pontos_positivo %}
 <h5 class="header col s12 light center">O preço do café hoje é de U$<span class="green-text">{{preco}}</span></h5>
 {% endif %}
@@ -21,10 +22,10 @@
 </div>
   {% if graph %}
   <div class="row">
-    <div class="col s6 push-s6">
+    <div class="col s12">
         {{ graph|safe }}
     </div>
   </div>
   {% endif %}
-<meta http-equiv="refresh" content="20">
+<meta http-equiv="refresh" content="30">
 {% endblock %}

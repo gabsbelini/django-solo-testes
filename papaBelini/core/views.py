@@ -1,5 +1,6 @@
 import urllib.request
 from bs4 import BeautifulSoup
+from .models import Commodity
 import datetime
 
 from django.shortcuts import render
@@ -14,6 +15,7 @@ import plotly.graph_objs as go
 
 
 class CafeView(TemplateView):
+    #Commodity.objects.all().delete()
     def get_context_data(self, **kwargs):
         class AppURLopener(urllib.request.FancyURLopener):
             version = "Mozilla/5.0"
@@ -24,16 +26,27 @@ class CafeView(TemplateView):
         price_var_points = float(soup.find("td", {"class": "pid-8832-pc"}).get_text())
         context = super(CafeView, self).get_context_data(**kwargs)
         context['preco'] = price
+        context['tiponow'] = type(datetime.datetime.now().time())
+        context['timenow'] = datetime.datetime.now().time()
+        datetime_banco = Commodity.objects.latest('id').time
+        datetime_padrao = datetime.datetime.now()
+        print((datetime_banco), (datetime_padrao))
         if price_var_points >= 0.0:
+            cafe = Commodity(name='cafe', price=price, variation='+'+str(price_var_points))
             context['pontos_positivo'] = str(price_var_points)
         else:
+            cafe = Commodity(name='cafe', price=price, variation='-'+str(price_var_points))
             context['pontos_negativo'] = str(price_var_points)
-        x = [-2.5, 0.4, 4.2, 6.9, 7.8, 8, 10, 15, 25]
-        y = [q**2-q+3 for q in x]
+        context['commodity_time'] = cafe.time
+
+        cafe.save()
+        context['tipo_commodity_time'] = type(cafe.time)
+        y = [obj.price for obj in Commodity.objects.all()]
+        x = [obj.time for obj in Commodity.objects.all()]
         trace1 = go.Scatter(x=x, y=y, marker={'color': 'red', 'symbol': 104, 'size': "10"},
                             mode="lines",  name='1st Trace')
         data=go.Data([trace1])
-        layout=go.Layout(title="Coffee Price", xaxis={'title':'x1'}, yaxis={'title':'x2'})
+        layout=go.Layout(title="Coffee Price", xaxis={'title':'Hora'}, yaxis={'title':'Preço U$'})
         figure=go.Figure(data=data,layout=layout)
         div = opy.plot(figure, auto_open=False, output_type='div')
         context['graph'] = div
