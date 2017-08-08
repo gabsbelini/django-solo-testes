@@ -9,6 +9,10 @@ import requests
 import json
 import numpy as np
 
+
+from django.shortcuts import HttpResponse
+from django.core.exceptions import *
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic.edit import FormView
 from .forms import GraphForm
@@ -46,39 +50,119 @@ for dia in range(5):
         indice = 4
     else:
         indice -= 1
+
+
+
+
+
+
+
 class CafeView(TemplateView):
     #Commodity.objects.all().delete()
     def get_context_data(self, **kwargs):
-        class AppURLopener(urllib.request.FancyURLopener):
-            version = "Mozilla/5.0"
-        opener = AppURLopener()
-        response = opener.open('https://www.investing.com/commodities/us-coffee-c-contracts').read()
-        soup = BeautifulSoup(response, 'html.parser')
-        price = float(soup.find("td", {"class": "pid-8832-last"}).get_text())
-        price_var_points = float(soup.find("td", {"class": "pid-8832-pc"}).get_text())
         context = super(CafeView, self).get_context_data(**kwargs)
-        context['preco'] = price
-        context['tiponow'] = type(datetime.datetime.now().time())
-        context['timenow'] = datetime.datetime.now().time()
-        datetime_banco = Commodity.objects.latest('id').time
-        datetime_padrao = datetime.datetime.now()
-        print((datetime_banco), (datetime_padrao))
-        if price_var_points >= 0.0:
-            cafe = Commodity(name='cafe', price=price, variation='+'+str(price_var_points))
-            context['pontos_positivo'] = str(price_var_points)
-        else:
-            cafe = Commodity(name='cafe', price=price, variation='-'+str(price_var_points))
-            context['pontos_negativo'] = str(price_var_points)
-        context['commodity_time'] = cafe.time
+                # Create trace lists
+        lista_precos_max = []
+        lista_datas_max = []
+        for variacao in range(len(rjson['dataset']['data'])):
+            lista_precos_max.append(rjson['dataset']['data'][variacao][4])
+            lista_datas_max.append(rjson['dataset']['data'][variacao][0])
 
-        cafe.save()
-        context['tipo_commodity_time'] = type(cafe.time)
-        y = [obj.price for obj in Commodity.objects.all()]
-        x = [obj.time for obj in Commodity.objects.all()]
-        trace1 = go.Scatter(x=x, y=y, marker={'color': 'red', 'symbol': 104, 'size': "10"},
-                            mode="lines",  name='1st Trace')
-        data=go.Data([trace1])
-        layout=go.Layout(title="Coffee Price", xaxis={'title':'Hora'}, yaxis={'title':'Preço U$'})
+        lista_precos_semestre = []
+        lista_datas_semestre = []
+        for variacao in range(132):
+            lista_precos_semestre.append(rjson['dataset']['data'][variacao][4])
+            lista_datas_semestre.append(rjson['dataset']['data'][variacao][0])
+
+
+        lista_precos_mes = []
+        lista_datas_mes = []
+        for variacao in range(23):
+            lista_precos_mes.append(rjson['dataset']['data'][variacao][4])
+            lista_datas_mes.append(rjson['dataset']['data'][variacao][0])
+
+        lista_precos_semana = []
+        lista_datas_semana = []
+        for variacao in range(5):
+            lista_precos_semana.append(rjson['dataset']['data'][variacao][4])
+            lista_datas_semana.append(rjson['dataset']['data'][variacao][0])
+
+        # Create traces
+        trace_max = go.Scatter(
+            y = lista_precos_max,
+            x = lista_datas_max,
+            fill='tonexty',
+            line=go.Line(color='blue')
+        )
+        trace_semestre = go.Scatter(
+            y = lista_precos_semestre,
+            x = lista_datas_semestre,
+            visible = False,
+            fill='tonexty',
+            line=go.Line(color='orange')
+
+        )
+        trace_mes = go.Scatter(
+            y = lista_precos_mes,
+            x = lista_datas_mes,
+            fill='tonexty',
+            visible = False,
+        )
+        trace_semana = go.Scatter(
+            y = lista_precos_semana,
+            x = lista_datas_semana,
+            fill='tonexty',
+            visible = False,
+        )
+        layout = go.Layout(
+            title="Cotação do Café em Dólares Americanos (U$)",
+            xaxis=dict(
+                title="Período",
+                titlefont=dict(
+                    family='Courier New, monospace',
+                    size=18,
+                    color='#7f7f7f'
+                )
+            ),
+            yaxis=dict(
+                title="Valor U$",
+                titlefont=dict(
+                    family='Courier New, monospace',
+                    size=18,
+                    color='#7f7f7f'
+                ),
+                rangemode="normal"
+            ),
+            updatemenus=list([
+                dict(
+                    buttons=list([
+                        dict(
+                            args=['visible', [True, False, False, False]],
+                            label='Variação Anual',
+                            method='restyle'
+                        ),
+                        dict(
+                            args=['visible', [False, True, False, False]],
+                            label='Variação Semestral',
+                            method='restyle'
+                        ),
+                        dict(
+                            args=['visible', [False, False, True, False]],
+                            label='Variação Mensal',
+                            method='restyle'
+                        ),
+                        dict(
+                            args=['visible', [False, False, False, True]],
+                            label='Variação Semanal',
+                            method='restyle'
+                        )
+                    ]),
+                )
+            ]),
+        )
+
+
+        data = go.Data([trace_max, trace_semestre, trace_mes, trace_semana])
         figure=go.Figure(data=data,layout=layout)
         div = opy.plot(figure, auto_open=False, output_type='div')
         context['graph'] = div
@@ -124,7 +208,14 @@ class ComecandoView(TemplateView):
 
 class SobreView(TemplateView):
     #Commodity.objects.all().delete()
+    def post(self, request, *args, **kwargs):
+        dado = request.POST["textfield"]
+        context = super(SobreView, self).get_context_data(**kwargs)
+        context['dado'] = dado
+        return HttpResponseRedirect('sobre')
+
     def get_context_data(self, **kwargs):
+
         context = super(SobreView, self).get_context_data(**kwargs)
         trace1 = go.Bar(
         x=['segunda', 'terca', 'quarta', 'quinta', 'sexta'],
